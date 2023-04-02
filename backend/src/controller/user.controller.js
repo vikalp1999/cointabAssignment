@@ -3,7 +3,10 @@ const argon2= require("argon2");
 const jwt= require("jsonwebtoken")
 exports.signup=async(req,res)=>{
     const {email, password } = req.body;
-
+    if(password.length<8){
+      return res.status(403).send({"message":"password should be 8 character"})
+    }
+    
     try {
       const checkUser = await User.findOne({ email: email });
        // Find the user by email
@@ -22,25 +25,25 @@ exports.signup=async(req,res)=>{
 
 exports.login=async(req,res)=>{
     const { email, password } = req.body;
- 
+   console.log(email,password)
   try {
     // Find the user by email
     const user = await User.findOne({ email });
-   
+     console.log(user)
     let check=await argon2.verify(user.password, password);
-   
+    console.log(check)
     // If the user doesn't exist, return an error
     if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).send({ message: 'envalid email and apssword' });
     }
 
     // If the user is blocked, return an error
     if (user.blocked_until && user.blocked_until > new Date()) {
-      return res.status(403).json({ error: 'User is blocked' });
+      return res.status(403).send({ message: 'User is blocked' });
     }
 
     // If the password is incorrect, increment the count of incorrect attempts
-    if (check=="false") {
+    if (check==false) {
       user.count_incorrect += 1;
 
       // If the user has reached the maximum number of attempts, block them for 24 hours
@@ -51,8 +54,11 @@ exports.login=async(req,res)=>{
 
       // Save the user to the database
       await user.save();
-
-      return res.status(401).json({ error: ' password' });
+       let left= 5-(user.count_incorrect)
+       if(left==5){
+        left=0
+       }
+      return res.status(401).send({ message: `incorrect password you have left ${left} chance`});
     }
 
     // If the password is correct, reset the count of incorrect attempts
