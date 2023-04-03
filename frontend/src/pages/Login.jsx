@@ -37,7 +37,7 @@ const Login = () => {
     }
          const payload = {email : Lemail,password : Lpassword};
          
-        let res= axios.post("https://cointabassignment.onrender.com/login",payload)
+        let res= axios.post("http://localhost:8080/login",payload)
         .then((res)=>
         
         localStorage.setItem("cointab-token", JSON.stringify({token : res.data.token, user: res.data.user})))

@@ -25,7 +25,7 @@ const Signup = () => {
         return;
     }
         const payload = {email : Remail,password : Rpassword}
-        let res= axios.post("https://cointabassignment.onrender.com/signup",payload)
+        let res= axios.post("http://localhost:8080/signup",payload)
         .then((res)=>alert("Register SucessFully")).
         catch((e)=>alert("something went wrong"))
 
