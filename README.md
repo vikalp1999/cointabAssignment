@@ -1,7 +1,4 @@
 # Cointab-assignment
-
-## Live demo
-
   
 ## Tech Stack
  - ### Frontend 
