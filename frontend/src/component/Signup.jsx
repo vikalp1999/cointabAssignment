@@ -20,6 +20,10 @@ const Signup = () => {
     const [Rpassword,setRpassword] = useState("")
 
     const handleRegister=async()=>{
+      if(Remail=="" || Rpassword=="") {
+        alert("Please fill the all fields")
+        return;
+    }
         const payload = {email : Remail,password : Rpassword}
         let res= axios.post("https://cointabassignment.onrender.com/signup",payload)
         .then((res)=>alert("Register SucessFully")).

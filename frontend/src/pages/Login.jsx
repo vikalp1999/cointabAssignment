@@ -18,19 +18,29 @@ import Signup from '../component/Signup';
 import axios from "axios";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+import { useContext } from "react";
 
 const Login = () => {
     const [Lemail,setLemail] = useState("")
     const [Lpassword,setLpassword] = useState("");
+    const {loading,setloading}=useContext(Context)
     const nav = useNavigate()
 
 
     const handleLogin = async () => {
+      if(Lemail=="" || Lpassword=="") {
+        alert("Please fill the all fields")
+        return;
+    }
          const payload = {email : Lemail,password : Lpassword};
+         setloading(true)
         let res= axios.post("https://cointabassignment.onrender.com/login",payload)
-        .then((res)=>localStorage.setItem("cointab-token", JSON.stringify({token : res.data.token, user: res.data.user})))
+        .then((res)=>
+        localStorage.setItem("cointab-token", JSON.stringify({token : res.data.token, user: res.data.user})))
         .then((res)=>alert("login sucessfully")).then((res)=>nav('/home'))
-        .catch((e)=>alert(e.response.data.message))
+        .catch((e)=>
+        alert(e.response.data.message))
     }
 
   return (
