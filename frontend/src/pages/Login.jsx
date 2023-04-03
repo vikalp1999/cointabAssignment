@@ -24,7 +24,7 @@ import { useContext } from "react";
 const Login = () => {
     const [Lemail,setLemail] = useState("")
     const [Lpassword,setLpassword] = useState("");
-    const {loading,setloading}=useContext(Context)
+    
     const nav = useNavigate()
 
 
@@ -34,7 +34,7 @@ const Login = () => {
         return;
     }
          const payload = {email : Lemail,password : Lpassword};
-         setloading(true)
+        
         let res= axios.post("https://cointabassignment.onrender.com/login",payload)
         .then((res)=>
         localStorage.setItem("cointab-token", JSON.stringify({token : res.data.token, user: res.data.user})))
